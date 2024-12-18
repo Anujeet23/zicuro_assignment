@@ -16,7 +16,6 @@ DefaultDraftInlineStyle["red"] = { color: "red" };
 const MyEditor = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
-  // Load editor content from localStorage on mount
   useEffect(() => {
     const savedContent = localStorage.getItem("editorContent");
     if (savedContent) {
@@ -26,7 +25,6 @@ const MyEditor = () => {
     }
   }, []);
 
-  // Save content to localStorage
   const saveContent = () => {
     const contentState = editorState.getCurrentContent();
     localStorage.setItem(
@@ -36,7 +34,6 @@ const MyEditor = () => {
     alert("Content saved!");
   };
 
-  // Handle key commands and formatting
   const handleKeyCommand = (command, editorState) => {
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
@@ -46,14 +43,12 @@ const MyEditor = () => {
     return "not-handled";
   };
 
-  // Custom logic for symbol-based formatting
   const handleBeforeInput = (char) => {
     const currentContent = editorState.getCurrentContent();
     const selection = editorState.getSelection();
     const block = currentContent.getBlockForKey(selection.getStartKey());
     const text = block.getText();
 
-    // Check for formatting triggers
     if (char === " " && text === "#") {
       applyBlockStyle("header-one");
       return "handled";
@@ -70,7 +65,6 @@ const MyEditor = () => {
     return "not-handled";
   };
 
-  // Apply block style
   const applyBlockStyle = (style) => {
     const selection = editorState.getSelection();
     const currentContent = editorState.getCurrentContent();
@@ -90,7 +84,6 @@ const MyEditor = () => {
     );
   };
 
-  // Apply inline style
   const applyInlineStyle = (style) => {
     setEditorState(RichUtils.toggleInlineStyle(editorState, style));
   };
